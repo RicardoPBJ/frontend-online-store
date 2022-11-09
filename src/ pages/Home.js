@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 
 export default class Home extends Component {
+  state = {
+    productsList: [],
+  };
+
   render() {
+    const { productsList } = this.state;
     return (
       <>
         <label htmlFor="search-input">
@@ -12,7 +17,14 @@ export default class Home extends Component {
             name="search"
           />
         </label>
-        <h3 data-testid="home-initial-message">Digite algum termo de pesquisa ou escolha uma categoria.</h3>
+        {
+          productsList.length === 0
+          && (
+            <h3 data-testid="home-initial-message">
+              Digite algum termo de pesquisa ou escolha uma categoria.
+            </h3>)
+        }
+
       </>
     );
   }
