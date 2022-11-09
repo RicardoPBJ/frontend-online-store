@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import * as api from '../services/api';
 import { Link } from 'react-router-dom';
-
+import * as api from '../services/api';
 
 export default class Home extends Component {
   state = {
