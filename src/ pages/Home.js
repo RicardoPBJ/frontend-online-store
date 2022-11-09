@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import * as api from '../services/api';
+import { Link } from 'react-router-dom';
+
 
 export default class Home extends Component {
   state = {
@@ -43,6 +45,7 @@ export default class Home extends Component {
             </label>
           ))}
         </section>
+        <Link to="/cart" data-testid="shopping-cart-button" />
       </>
     );
   }
