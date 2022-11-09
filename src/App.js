@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import * as api from './services/api';
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
+          { api.getCategories().then() }
+          { api.getProductsFromCategoryAndQuery().then() }
           Learn React
         </a>
       </header>
