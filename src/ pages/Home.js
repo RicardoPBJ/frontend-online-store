@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
+import * as api from '../services/api';
 
 export default class Home extends Component {
   state = {
@@ -7,7 +9,12 @@ export default class Home extends Component {
     isSearched: false,
     productsList: [],
     isListValid: false,
+    categories: [],
   };
+
+  componentDidMount() {
+    this.fetchCategories();
+  }
 
   handdleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,8 +40,16 @@ export default class Home extends Component {
     });
   };
 
+  fetchCategories = async () => {
+    const categories = await api.getCategories();
+    this.setState({ categories });
+  };
+
   render() {
-    const { searchInput, isSearched, productsList, isListValid } = this.state;
+    const {
+      productsList, categories, searchInput,
+      isSearched, isListValid,
+    } = this.state;
     return (
       <>
         <label htmlFor="search-input">
@@ -64,8 +79,19 @@ export default class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </h3>)
         }
-        {
-          isSearched
+        <section>
+          {categories.map(({ id, name }) => (
+            <label key={ id } htmlFor={ id } data-testid="category">
+              { name }
+              <input type="radio" value={ name } name="categories" id={ id } />
+            </label>
+          ))}
+        </section>
+        <Link to="/cart" data-testid="shopping-cart-button" />
+
+        <section>
+          {
+            isSearched
             && productsList.map((prod) => (
               <div key={ prod.id } data-testid="product">
                 <h3>{ prod.title }</h3>
@@ -77,10 +103,11 @@ export default class Home extends Component {
                 </p>
               </div>
             ))
-        }
-        {
-          isListValid && <h1>Nenhum produto foi encontrado</h1>
-        }
+          }
+          {
+            isListValid && <h1>Nenhum produto foi encontrado</h1>
+          }
+        </section>
       </>
     );
   }
