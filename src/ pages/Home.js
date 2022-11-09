@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
+import * as api from '../services/api';
 
 export default class Home extends Component {
   state = {
     productsList: [],
+    categories: [],
+  };
+
+  componentDidMount() {
+    this.fetchCategories();
+  }
+
+  fetchCategories = async () => {
+    const categories = await api.getCategories();
+    this.setState({ categories });
   };
 
   render() {
-    const { productsList } = this.state;
+    const { productsList, categories } = this.state;
     return (
       <>
         <label htmlFor="search-input">
@@ -24,7 +35,14 @@ export default class Home extends Component {
               Digite algum termo de pesquisa ou escolha uma categoria.
             </h3>)
         }
-
+        <section>
+          {categories.map(({ id, name }) => (
+            <label key={ id } htmlFor={ id } data-testid="category">
+              { name }
+              <input type="radio" value={ name } name="categories" id={ id } />
+            </label>
+          ))}
+        </section>
       </>
     );
   }
