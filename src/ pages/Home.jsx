@@ -22,13 +22,15 @@ export default class Home extends Component {
     getProductsFromCategoryAndQuery(searchInput)
       .then((response) => {
         this.setState({ productsList: response.results, isSearched: true });
-        console.log(response.results);
-      });
+      }, this.validatedList());
   };
 
   validatedList = () => {
     const { productsList } = this.state;
-    return (productsList.length > 0);
+    const minLenght = 0;
+    this.setState({
+      isListValid: (productsList.length >= minLenght),
+    });
   };
 
   render() {
@@ -64,7 +66,7 @@ export default class Home extends Component {
         }
         {
           isSearched
-            ? productsList.map((prod) => (
+            && productsList.map((prod) => (
               <div key={ prod.id } data-testid="product">
                 <h3>{ prod.title }</h3>
                 <img src={ prod.thumbnail } alt={ prod.title } />
@@ -75,11 +77,10 @@ export default class Home extends Component {
                 </p>
               </div>
             ))
-            : (
-              <h1>Nenhum produto</h1>
-            )
         }
-
+        {
+          isListValid && <h1>Nenhum produto foi encontrado</h1>
+        }
       </>
     );
   }
